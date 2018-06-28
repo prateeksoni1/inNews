@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.prateek.innews.data.FetchNews
 import com.prateek.innews.utils.BASE_URL
 import org.json.JSONException
 
@@ -18,13 +19,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        requestQueue = Volley.newRequestQueue(this)
-        getAll(BASE_URL)
+//        requestQueue = Volley.newRequestQueue(this)
+//        getAll(BASE_URL)
 
+        FetchNews.getNews(this)
+
+        for(i in FetchNews.list) {
+            Log.d("News", "Title: ${i.title}\nDesc: ${i.description}\nURL: ${i.moreInfoUrl}\nImage: ${i.imageUrl}\n\n\n")
+        }
 
     }
 
-    
+
 
 
     //temporary function
