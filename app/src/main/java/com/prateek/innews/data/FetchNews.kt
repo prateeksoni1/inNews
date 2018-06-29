@@ -14,9 +14,9 @@ import org.json.JSONObject
 
 object FetchNews {
 
-    var list = ArrayList<News>()
+    var listNews = ArrayList<News>()
 
-    fun getNews(context: Context) {
+    fun getNews(context: Context, complete: (Boolean) -> Unit) {
         var objReq = JsonObjectRequest(Request.Method.GET, BASE_URL, null, Response.Listener { response ->
             try {
                 var jsonArray = response.getJSONArray("articles")
@@ -29,18 +29,24 @@ object FetchNews {
                     val moreUrl = obj.get("url").toString()
 
                     val news = News(title, desc, img, moreUrl)
-              //      Log.d("OBJ", "${news.title}")
-                    list.add(news)
-//                    Log.d("LIST", list[i].title)
+
+                    if(!(title == "null") && !(desc == "null") && !(img == "null") && !(moreUrl == "null")) {
+                        Log.d("OBJ", "${news.title}")
+                        listNews.add(news)
+                      //  Log.d("LIST", listNews[i].title)
+                        complete(true)
+                    }
 
                 }
 
             } catch (e: JSONException) {
                 Log.d("Catch", e.localizedMessage)
+                complete(false)
             }
 
         }, Response.ErrorListener {
             it.printStackTrace()
+            complete(false)
         })
 
         Volley.newRequestQueue(context).add(objReq)
